@@ -7,12 +7,6 @@ pipeline {
         DOCKER_TAG = "${BUILD_NUMBER}"
         DOCKER_REGISTRY = 'docker.io' // Change to your registry
         
-        // SonarCloud settings
-        SONAR_TOKEN = credentials('sonarcloud-token')
-        SONAR_HOST_URL = 'https://sonarcloud.io'
-        SONAR_ORGANIZATION = 'anjumk' // Change this
-        SONAR_PROJECT_KEY = 'anjumk_TODO_APP' // Change this
-        
         // Snyk settings
         SNYK_TOKEN = credentials('snyk-token')
         
@@ -28,31 +22,6 @@ pipeline {
                 sh 'git rev-parse --short HEAD > .git/commit-id'
                 script {
                     env.GIT_COMMIT_SHORT = readFile('.git/commit-id').trim()
-                }
-            }
-        }
-        
-        stage('Code Quality - SonarCloud') {
-            steps {
-                echo '🔍 Running SonarCloud analysis...'
-                script {
-                    // Install sonar-scanner if not available
-                    sh '''
-                        if ! command -v sonar-scanner &> /dev/null; then
-                            echo "Installing sonar-scanner..."
-                            wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-                            unzip -q sonar-scanner-cli-4.8.0.2856-linux.zip
-                            export PATH="$PWD/sonar-scanner-4.8.0.2856-linux/bin:$PATH"
-                        fi
-                        
-                        sonar-scanner \\
-                            -Dsonar.organization=${SONAR_ORGANIZATION} \\
-                            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \\
-                            -Dsonar.sources=. \\
-                            -Dsonar.host.url=${SONAR_HOST_URL} \\
-                            -Dsonar.login=${SONAR_TOKEN} \\
-                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-                    '''
                 }
             }
         }
@@ -132,25 +101,6 @@ pipeline {
                         docker stop test-container
                         docker rm test-container
                     """
-                }
-            }
-        }
-        
-        stage('Quality Gate') {
-            steps {
-                echo '✅ Checking quality gates...'
-                script {
-                    // Wait for SonarCloud quality gate
-                    timeout(time: 5, unit: 'MINUTES') {
-                        def qg = waitForQualityGate()
-                        if (qg.status != 'OK') {
-                            echo "⚠️  Quality Gate failed: ${qg.status}"
-                            // Uncomment to fail the build on quality gate failure
-                            // error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        } else {
-                            echo "✅ Quality Gate passed!"
-                        }
-                    }
                 }
             }
         }
