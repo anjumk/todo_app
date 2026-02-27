@@ -1,5 +1,5 @@
 # Multi-stage build for optimized production image
-FROM nginx:alpine as production
+FROM nginx:alpine AS production
 
 # Set working directory
 WORKDIR /usr/share/nginx/html
