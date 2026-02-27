@@ -1,0 +1,46 @@
+# Snyk configuration file
+# Visit https://app.snyk.io to get your API token
+
+# Language settings
+language-settings:
+  javascript:
+    targetFramework: 'none'
+
+# Exclude patterns
+exclude:
+  global:
+    - node_modules/**
+    - dist/**
+    - build/**
+    - coverage/**
+    - .git/**
+    - .vscode/**
+
+# Severity threshold (low, medium, high, critical)
+severity-threshold: medium
+
+# Fail on issues
+failOn: all
+
+# Organization
+org: your-snyk-org
+
+# Project name
+project-name: todo-app
+
+# License policy
+license-policy: true
+
+# Docker settings (for container scanning)
+docker:
+  # Image to scan
+  image: todo-app:latest
+  # Dockerfile location  
+  dockerfile: Dockerfile
+
+# Monitor settings
+monitor: true
+prune-repeated-subdependencies: true
+
+# Remote repository
+remote-repo-url: https://github.com/your-username/todo-app
