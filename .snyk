@@ -23,7 +23,7 @@ severity-threshold: medium
 failOn: all
 
 # Organization
-org: your-snyk-org
+org: anjumk
 
 # Project name
 project-name: todo-app
@@ -43,4 +43,4 @@ monitor: true
 prune-repeated-subdependencies: true
 
 # Remote repository
-remote-repo-url: https://github.com/your-username/todo-app
+remote-repo-url: https://github.com/anjumk/todo-app

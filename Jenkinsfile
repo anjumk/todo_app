@@ -10,8 +10,8 @@ pipeline {
         // SonarCloud settings
         SONAR_TOKEN = credentials('sonarcloud-token')
         SONAR_HOST_URL = 'https://sonarcloud.io'
-        SONAR_ORGANIZATION = 'your-org' // Change this
-        SONAR_PROJECT_KEY = 'your-project-key' // Change this
+        SONAR_ORGANIZATION = 'anjumk' // Change this
+        SONAR_PROJECT_KEY = 'anjumk_TODO_APP' // Change this
         
         // Snyk settings
         SNYK_TOKEN = credentials('snyk-token')
